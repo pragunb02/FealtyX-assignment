@@ -192,17 +192,22 @@ The API integrates with Ollama for generating student summaries using the follow
    The API uses a carefully crafted prompt template for generating summaries:
    ```python
    prompt = f"""
-   Generate a brief professional summary for a student with the following details:
-   Name: {student.name}
-   Age: {student.age}
-   Email: {student.email}
 
-   Please include:
-   - Academic profile
-   - Age-appropriate achievements
-   - Contact information
-   Format the response in a professional manner.
-   """
+    Create a detailed student profile analysis and mentorship summary:
+    
+    Student Details:
+    - Name: {student['name']}
+    - Age: {student['age']}
+    - Email: {student['email']}
+    
+   Please provide the following:
+    1. A brief, impactful assessment of their academic potential (1 sentence)
+    2. The key area(s) for improvement or growth based on their age group and academic progress (1 sentence)
+    3. Specific and actionable recommendations for their educational journey (1 sentence)
+    4. A motivational statement or words of encouragement for the student (1 sentence)
+    
+    Format the response with only 4 distinct points, each concise and structured and no special chacaters and directly give 4 points
+    """
    ```
 
 2. **Summary Generation**
@@ -210,7 +215,6 @@ The API integrates with Ollama for generating student summaries using the follow
    response = ollama.generate(
        model="llama3",
        prompt=prompt,
-       max_tokens=200
    )
    ```
 
@@ -248,34 +252,6 @@ ollama pull llama3
    - Confirm Ollama service is running
    - Check if the required models are properly installed
 
-## Future Enhancements
-
-1. **PDF Generation for Student Summary**
-   - Allow users to download a PDF containing the student summary
-   - Include formatting options for the PDF output
-
-2. **Search Functionality**
-   - Add the ability to search students by:
-     - Name
-     - Email
-     - Age range
-     - Custom criteria
-
-3. **Authentication**
-   - Implement user authentication
-   - Role-based access control
-   - API key management
-
-4. **Logging and Monitoring**
-   - Integrate comprehensive logging
-   - Add usage analytics
-   - Implement performance monitoring
-   - Set up alert systems
-
-5. **Data Export/Import**
-   - Add bulk import functionality
-   - Enable data export in various formats
-   - Implement backup solutions
 
 ### Error Handling
 
@@ -308,12 +284,42 @@ The application uses in-memory storage with thread-safe operations:
 - Mutex implementation for concurrent access
 - Atomic operations for ID generation
 
-Key test areas:
+## Key test areas:
 1. CRUD operations
 2. Input validation
 3. Concurrent access
 4. Ollama integration
 5. Error handling
+
+## Future Enhancements
+
+1. **PDF Generation for Student Summary**
+   - Allow users to download a PDF containing the student summary
+   - Include formatting options for the PDF output
+
+2. **Search Functionality**
+   - Add the ability to search students by:
+     - Name
+     - Email
+     - Age range
+     - Custom criteria
+
+3. **Authentication**
+   - Implement user authentication
+   - Role-based access control
+   - API key management
+
+4. **Logging and Monitoring**
+   - Integrate comprehensive logging
+   - Add usage analytics
+   - Implement performance monitoring
+   - Set up alert systems
+
+5. **Data Export/Import**
+   - Add bulk import functionality
+   - Enable data export in various formats
+   - Implement backup solutions
+
 
 
 ## Contributing
