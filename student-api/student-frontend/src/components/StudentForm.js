@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './StudentForm.css';
 
 const StudentForm = () => {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const StudentForm = () => {
     try {
       // Send POST request with validated data
       await axios.post('/students', validatedFormData);
-      // Reset the form after successful submission
+      // Reseting the form after successful submission
       setFormData({ name: '', age: '', email: '' });
     } catch (error) {
       console.error('Error creating student:', error);

@@ -1,0 +1,36 @@
+.student-details-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.student-details-container h1 {
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    color: #2c3e50;
+    text-align: left;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.student-details-container p {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin: 8px 0;
+}
+
+.student-details-container p span {
+    font-weight: bold;
+    color: #3498db;
+}
+
+.student-details-container .label {
+    color: #7f8c8d;
+    font-weight: bold;
+}

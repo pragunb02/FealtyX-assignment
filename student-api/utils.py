@@ -60,10 +60,10 @@ def generate_student_prompt(student: Dict[str, Any]) -> str:
     - Email: {student['email']}
     
    Please provide the following:
-    1. A brief, impactful assessment of their academic potential (1-2 sentences)
-    2. The key area(s) for improvement or growth based on their age group and academic progress (1-2 sentences)
-    3. Specific and actionable recommendations for their educational journey (1-2 sentences)
-    4. A motivational statement or words of encouragement for the student (1-2 sentences)
+    1. A brief, impactful assessment of their academic potential (1 sentence)
+    2. The key area(s) for improvement or growth based on their age group and academic progress (1 sentence)
+    3. Specific and actionable recommendations for their educational journey (1 sentence)
+    4. A motivational statement or words of encouragement for the student (1 sentence)
     
-    Format the response with 4 distinct points, each concise and structured.
+    Format the response with only 4 distinct points, each concise and structured and no special chacaters and directly give 4 points
     """
