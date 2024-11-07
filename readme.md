@@ -28,7 +28,7 @@ Before starting the application, make sure you have the following installed:
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/pragunb02/FealtyX-assignment
 cd student-api
 ```
 
@@ -40,13 +40,14 @@ pip install -r requirements.txt
 3. Ensure the Ollama API is set up and running:
 ```bash
 ps aux | grep ollama # Check if Ollama is running
-ollama list # Verify if the llama2 model is installed
-ollama pull llama2 # Pull the llama2 model if not already installed
+ollama list # Verify if the llama3 model is installed
+ollama pull llama3 # Pull the llama3 model if not already installed
+ollama serve
 ```
 
 4. Run the Flask application:
 ```bash
-python app.py
+python3 app.py
 ```
 
 The app will start at http://localhost:5001.
@@ -55,7 +56,7 @@ The app will start at http://localhost:5001.
 
 ### Available Endpoints
 
-#### Health Check
+#### 1) Health Check
 **Endpoint:** `GET /health`
 
 Description: Check if the API is up and running.
@@ -67,7 +68,7 @@ curl http://localhost:5001/health
 
 [Insert screenshot of health check endpoint response]
 
-#### Create a Student
+#### 2) Create a Student
 **Endpoint:** `POST /students`
 
 Description: Add a new student.
@@ -90,7 +91,7 @@ curl -X POST http://localhost:5001/students \
 
 [Insert screenshot of create student endpoint response]
 
-#### Get All Students
+#### 3) Get All Students
 **Endpoint:** `GET /students`
 
 Description: Retrieve all students. Supports pagination with query parameters.
@@ -107,7 +108,7 @@ curl 'http://localhost:5001/students?page=1&per_page=5'
 
 [Insert screenshot of get all students endpoint response]
 
-#### Get a Single Student by ID
+#### 4) Get a Single Student by ID
 **Endpoint:** `GET /students/{id}`
 
 Description: Retrieve the student details by ID.
@@ -119,7 +120,7 @@ curl http://localhost:5001/students/1
 
 [Insert screenshot of get single student endpoint response]
 
-#### Update a Student
+#### 5) Update a Student
 **Endpoint:** `PUT /students/{id}`
 
 Description: Update an existing student by ID.
@@ -142,7 +143,7 @@ curl -X PUT http://localhost:5001/students/1 \
 
 [Insert screenshot of update student endpoint response]
 
-#### Delete a Student
+#### 6) Delete a Student
 **Endpoint:** `DELETE /students/{id}`
 
 Description: Delete the student by ID.
@@ -154,7 +155,7 @@ curl -X DELETE http://localhost:5001/students/1
 
 [Insert screenshot of delete student endpoint response]
 
-#### Generate a Student Summary
+#### 7) Generate a Student Summary
 **Endpoint:** `GET /students/{id}/summary`
 
 Description: Generate or retrieve a cached summary of the student's details.
@@ -166,7 +167,7 @@ curl http://localhost:5001/students/1/summary
 
 [Insert screenshot of student summary endpoint response]
 
-#### Ollama API Status
+#### 8) Ollama API Status
 **Endpoint:** `GET /ollama/status`
 
 Description: Check the status of the Ollama API and list available models.
@@ -187,12 +188,12 @@ Here are some example responses from the API endpoints:
 ## Troubleshooting
 
 ### Ollama API Errors
-If you encounter errors when trying to generate a student summary, ensure Ollama is running and the llama2 model is available. You can check this using the following commands:
+If you encounter errors when trying to generate a student summary, ensure Ollama is running and the llama3 model is available. You can check this using the following commands:
 
 ```bash
 ps aux | grep ollama
 ollama list
-ollama pull llama2
+ollama pull llama3
 ```
 
 ### Common Issues and Solutions
@@ -201,11 +202,7 @@ ollama pull llama2
    - Verify the server is running on the correct port
    - Check if there are any conflicting applications using port 5001
 
-2. **Database Errors**
-   - Ensure all migrations are up to date
-   - Verify database connection settings
-
-3. **Ollama Integration Issues**
+2. **Ollama Integration Issues**
    - Confirm Ollama service is running
    - Check if the required models are properly installed
 
@@ -246,16 +243,12 @@ ollama pull llama2
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-Project Link: [https://github.com/yourusername/student-api](https://github.com/yourusername/student-api)
+Project Link: [https://github.com/pragunb02/FealtyX-assignment](https://github.com/pragunb02/FealtyX-assignment)
 
 ## Acknowledgments
 
 * Thanks to the Flask community for the excellent web framework
 * Ollama team for providing the AI capabilities
-* All contributors who have helped shape this project
