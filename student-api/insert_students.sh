@@ -1,9 +1,10 @@
 #!/bin/bash
 
-for i in {1..20}
-do
-  curl -X POST https://fealtyx-1.onrender.com/ \
-  -H "Content-Type: application/json" \
-  -d "{\"name\": \"Student $i\", \"age\": $((18 + $i)), \"email\": \"student$i@example.com\"}"
-  echo ""
-done
+# Start Flask app (on the port provided by Render)
+python3 app.py &
+
+# Wait for the app to start (optional, you can adjust the sleep time if needed)
+sleep 5
+
+# Run the student insertion script (if Flask is up and running)
+./insert_students.sh
