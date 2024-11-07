@@ -5,14 +5,20 @@
 This API is designed to manage student data, including creating, reading, updating, and deleting student records. Additionally, the API integrates with the Ollama service to generate summaries of student details.
 
 ## Features
-
-- **Create a new student**
-- **Retrieve student details**
-- **Update student information**
-- **Delete a student**
-- **Generate a student summary** using the Ollama API
-- **Health check to ensure the server is running**
-- **List all students with pagination**
+* **Create a new student** (POST /students)
+* **Retrieve student details** (GET /students/{id})
+* **Update student information** (PUT /students/{id})
+* **Delete a student** (DELETE /students/{id})
+* **List all students with pagination** (GET /students)
+* **Generate AI summaries** using Ollama (GET /students/{id}/summary)
+* **Health check** for server status (GET /health)
+* **Ollama status check** (GET /ollama/status)
+* **Cache system** for AI summaries
+* **Rate limiting** for API protection
+* **Thread-safe** operations
+* **Input validation** with error handling
+* **CORS** enabled
+* **Comprehensive logging**
 
 ## Setup Instructions
 
@@ -25,32 +31,25 @@ Before starting the application, make sure you have the following installed:
 - Ollama API (for student summaries)
 
 ### Installation
-
-1. Clone this repository:
 ```bash
+# Clone repository
 git clone https://github.com/pragunb02/FealtyX-assignment
 cd student-api
-```
 
-2. Install the required Python dependencies:
-```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Setup Ollama
+ps aux | grep ollama  # Check if running
+ollama list          # Check models
+ollama pull llama2   # Install model
+ollama serve         #run model
+
+# Run application
+python app.py
 ```
 
-3. Ensure the Ollama API is set up and running:
-```bash
-ps aux | grep ollama # Check if Ollama is running
-ollama list # Verify if the llama3 model is installed
-ollama pull llama3 # Pull the llama3 model if not already installed
-ollama serve
-```
-
-4. Run the Flask application:
-```bash
-python3 app.py
-```
-
-The app will start at http://localhost:5001.
+The app runs at http://localhost:5001
 
 ## API Documentation
 
@@ -185,6 +184,49 @@ Here are some example responses from the API endpoints:
 
 [Insert screenshots of example responses from various endpoints showing successful and error cases]
 
+### Ollama Integration Details
+
+The API integrates with Ollama for generating student summaries using the following approach:
+
+1. **Prompt Engineering**
+   The API uses a carefully crafted prompt template for generating summaries:
+   ```python
+   prompt = f"""
+   Generate a brief professional summary for a student with the following details:
+   Name: {student.name}
+   Age: {student.age}
+   Email: {student.email}
+
+   Please include:
+   - Academic profile
+   - Age-appropriate achievements
+   - Contact information
+   Format the response in a professional manner.
+   """
+   ```
+
+2. **Summary Generation**
+   ```python
+   response = ollama.generate(
+       model="llama3",
+       prompt=prompt,
+       max_tokens=200
+   )
+   ```
+
+3. **Caching**
+   - Summaries are cached to improve performance
+   - Cache invalidates after student data updates
+
+Example Summary Response:
+```json
+{
+    "id": 1,
+    "summary": "John Doe is a 20-year-old student with strong academic potential...",
+    "generated_at": "2024-03-08T12:00:00Z"
+}
+```
+
 ## Troubleshooting
 
 ### Ollama API Errors
@@ -234,6 +276,45 @@ ollama pull llama3
    - Add bulk import functionality
    - Enable data export in various formats
    - Implement backup solutions
+
+### Error Handling
+
+The API implements comprehensive error handling for various scenarios:
+
+1. **404 Not Found**
+   - When a student ID doesn't exist
+   - Example response: `{"error": "Student not found"}`
+
+2. **400 Bad Request**
+   - Invalid input data
+   - Missing required fields
+   - Example response: `{"error": "Invalid input: age must be a positive integer"}`
+
+3. **500 Internal Server Error**
+   - Ollama service unavailable
+   - Example response: `{"error": "Failed to generate summary"}`
+
+## Concurrency
+
+- Thread-safe operations using locks
+- Cache with atomic operations
+- Rate limiting protection
+- Protected shared resources  
+
+## Data Storage
+
+The application uses in-memory storage with thread-safe operations:
+- Primary data structure: Dictionary with student ID as key
+- Mutex implementation for concurrent access
+- Atomic operations for ID generation
+
+Key test areas:
+1. CRUD operations
+2. Input validation
+3. Concurrent access
+4. Ollama integration
+5. Error handling
+
 
 ## Contributing
 
