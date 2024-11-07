@@ -192,7 +192,7 @@ def get_student_summary(id: int) -> Tuple[Dict[str, Any], int]:
             "suggestions": [
                 "Check if Ollama is running: 'ps aux | grep ollama'",
                 f"Verify model '{Config.OLLAMA_MODEL}' is installed: 'ollama list'",
-                "Try pulling the model: 'ollama pull llama2'",
+                "Try pulling the model: 'ollama pull llama3'",
                 "Check Ollama logs for errors"
             ]
         }, 500
