@@ -8,5 +8,3 @@ class Config:
     CACHE_DURATION = int(os.getenv('CACHE_DURATION', 3000))
     REQUEST_TIMEOUT = int(os.getenv('REQUEST_TIMEOUT', 30))
     MAX_RETRIES = int(os.getenv('MAX_RETRIES', 3))
-    RATE_LIMIT_CALLS = int(os.getenv('RATE_LIMIT_CALLS', 100))
-    RATE_LIMIT_PERIOD = int(os.getenv('RATE_LIMIT_PERIOD', 60))

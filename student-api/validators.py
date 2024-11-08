@@ -1,11 +1,14 @@
+# regular expression module
 import re
 from typing import List, Dict, Union
 
 def validate_email(email: str) -> bool:
+    # regular expression pattern
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, email))
 
 def validate_age(age: int) -> bool:
+    # age is of type int
     return isinstance(age, int) and 5 <= age <= 120
 
 def validate_name(name: str) -> bool:
@@ -13,7 +16,7 @@ def validate_name(name: str) -> bool:
 
 def validate_student_data(data: Dict) -> List[str]:
     errors = []
-    
+    # name is missing or name is invalid
     if not data.get('name') or not validate_name(data.get('name', '')):
         errors.append("Name must be between 2 and 100 characters")
     
