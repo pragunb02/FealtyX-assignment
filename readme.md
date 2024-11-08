@@ -14,7 +14,6 @@ This API is designed to manage student data, including creating, reading, updati
 * **Health check** for server status (GET /health)
 * **Ollama status check** (GET /ollama/status)
 * **Cache system** for AI summaries
-* **Rate limiting** for API protection
 * **Thread-safe** operations
 * **Input validation** with error handling
 * **CORS** enabled
@@ -42,7 +41,7 @@ pip install -r requirements.txt
 # Setup Ollama
 ps aux | grep ollama  # Check if running
 ollama list          # Check models
-ollama pull llama2   # Install model
+ollama pull llama3   # Install model
 ollama serve         #run model
 
 # Run application
@@ -178,11 +177,12 @@ curl http://localhost:5001/ollama/status
 
 [Insert screenshot of Ollama status endpoint response]
 
-## API Response Examples
+## Data Validation
 
-Here are some example responses from the API endpoints:
-
-[Insert screenshots of example responses from various endpoints showing successful and error cases]
+The API validates student data using the `validate_student_data()` function, which checks:
+- Required fields presence (name, age, email)
+- Data type correctness
+- Field value validity
 
 ### Ollama Integration Details
 
@@ -253,36 +253,100 @@ ollama pull llama3
    - Check if the required models are properly installed
 
 
-### Error Handling
+## HTTP Status Codes
 
-The API implements comprehensive error handling for various scenarios:
+The API uses standard HTTP status codes to indicate the success or failure of requests:
 
-1. **404 Not Found**
-   - When a student ID doesn't exist
-   - Example response: `{"error": "Student not found"}`
+- `200`: Successful request
+- `201`: Resource successfully created
+- `400`: Bad Request (client error)
+- `404`: Not Found
+- `503`: Service Unavailable (for Ollama service)
 
-2. **400 Bad Request**
-   - Invalid input data
-   - Missing required fields
-   - Example response: `{"error": "Invalid input: age must be a positive integer"}`
+## Error Scenarios and Responses
 
-3. **500 Internal Server Error**
-   - Ollama service unavailable
-   - Example response: `{"error": "Failed to generate summary"}`
+### 1. Student Not Found (404)
+Occurs when attempting to access, update, or delete a non-existent student.
+
+```json
+{
+    "error": "Student not found"
+}
+```
+
+**Affected Endpoints:**
+- `GET /students/<id>`
+- `PUT /students/<id>`
+- `DELETE /students/<id>`
+- `GET /students/<id>/summary`
+
+### 2. Invalid Student Data (400)
+Occurs when the provided student data fails validation.
+
+```json
+{
+    "errors": {
+        "name": "Name is required",
+        "age": "Age must be provided",
+        "email": "Invalid email format"
+    }
+}
+```
+
+**Affected Endpoints:**
+- `POST /students`
+- `PUT /students/<id>`
+
+### 3. Ollama Service Status (503)
+Occurs when the Ollama service is unavailable.
+
+```json
+{
+    "status": "unavailable",
+    "help": "Make sure Ollama is running and the model is installed"
+}
+```
+
+**Affected Endpoints:**
+- `GET /ollama/status`
+
+### 4. Student Summary Generation
+The summary endpoint includes source information in successful responses:
+
+**Cache Hit Response:**
+```json
+{
+    "student_id": 1,
+    "summary": "...",
+    "source": "cache",
+    "generated_at": "2024-11-08T12:00:00Z"
+}
+```
+
+**New Generation Response:**
+```json
+{
+    "student_id": 1,
+    "summary": "...",
+    "source": "ollama",
+    "model": "llama2",
+    "generated_at": "2024-11-08T12:00:00Z"
+}
+```
 
 ## Concurrency
 
-- Thread-safe operations using locks
-- Cache with atomic operations
-- Rate limiting protection
-- Protected shared resources  
+- Thread-safe operations using a mutex lock (`lock`) to ensure safe concurrent access to shared resources.
+- Atomic ID generation using a global counter (`id_counter`) with a mutex to prevent race conditions.
+- Protected shared resources using locks during data manipulation.
 
 ## Data Storage
 
 The application uses in-memory storage with thread-safe operations:
-- Primary data structure: Dictionary with student ID as key
-- Mutex implementation for concurrent access
-- Atomic operations for ID generation
+- Primary data structure: Dictionary (`students`) with student ID as the key.
+- Mutex (`lock`) implementation for concurrent access to the shared `students` dictionary.
+- Atomic operations for ID generation using a global counter (`id_counter`), ensuring safe increment within the locked section.
+
 
 ## Key test areas:
 1. CRUD operations
@@ -309,33 +373,7 @@ The application uses in-memory storage with thread-safe operations:
    - Role-based access control
    - API key management
 
-4. **Logging and Monitoring**
-   - Integrate comprehensive logging
-   - Add usage analytics
-   - Implement performance monitoring
-   - Set up alert systems
-
-5. **Data Export/Import**
+4. **Data Export/Import**
    - Add bulk import functionality
    - Enable data export in various formats
    - Implement backup solutions
-
-
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-
-## Contact
-
-Project Link: [https://github.com/pragunb02/FealtyX-assignment](https://github.com/pragunb02/FealtyX-assignment)
-
-## Acknowledgments
-
-* Thanks to the Flask community for the excellent web framework
-* Ollama team for providing the AI capabilities

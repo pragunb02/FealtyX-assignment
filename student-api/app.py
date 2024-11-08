@@ -68,7 +68,7 @@ def add_student():
         global id_counter
         student = Student(id_counter, data["name"], data["age"], data["email"])
         students[id_counter] = student
-        id_counter += 1
+        id_counter += 1 #Atomic ID Generation
 
     logger.info(f"Created student with ID: {student.id}")
     return student.to_dict(), 201
