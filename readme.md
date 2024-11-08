@@ -45,7 +45,7 @@ ollama pull llama3   # Install model
 ollama serve         #run model
 
 # Run application
-python app.py
+3 app.py
 ```
 
 The app runs at http://localhost:5001
